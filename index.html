@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JSFF to VBCS Mapping</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --text: #1f2933;
+      --muted: #52606d;
+      --border: #d9e2ec;
+      --header: #243b53;
+      --likely-bg: #e6f6ff;
+      --likely-text: #075985;
+      --proven-bg: #e8f5e9;
+      --proven-text: #166534;
+      --none-bg: #fff3e0;
+      --none-text: #92400e;
+      --weak-bg: #f3e8ff;
+      --weak-text: #6b21a8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.45;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      color: var(--header);
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .meta {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .summary div {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .summary strong {
+      display: block;
+      color: var(--header);
+      font-size: 22px;
+    }
+
+    .summary span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    th,
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      background: #e9eef5;
+      color: var(--header);
+      font-size: 13px;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #102a43;
+      overflow-wrap: anywhere;
+    }
+
+    .jsff-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .jsff-list li {
+      margin: 0 0 4px;
+    }
+
+    .jsff-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .jsff-check {
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .url-cell code,
+    .jsff-path code {
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .jsff-path {
+      display: block;
+      margin: 3px 0 4px 24px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      min-width: 78px;
+      border-radius: 999px;
+      padding: 3px 9px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .likely {
+      background: var(--likely-bg);
+      color: var(--likely-text);
+    }
+
+    .proven {
+      background: var(--proven-bg);
+      color: var(--proven-text);
+    }
+
+    .none {
+      background: var(--none-bg);
+      color: var(--none-text);
+    }
+
+    .weak {
+      background: var(--weak-bg);
+      color: var(--weak-text);
+    }
+
+    .identified {
+      background: #eef2ff;
+      color: #3730a3;
+    }
+
+    .score {
+      background: #edf7ed;
+      color: #166534;
+    }
+
+    .notes {
+      margin-top: 18px;
+      padding: 16px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .notes p {
+      margin: 0 0 10px;
+    }
+
+    .notes p:last-child {
+      margin-bottom: 0;
+    }
+
+    .tag-legend {
+      margin: 14px 0 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .tag-legend div {
+      display: grid;
+      grid-template-columns: minmax(150px, max-content) 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .tag-legend dd {
+      margin: 2px 0 0;
+      color: var(--muted);
+    }
+
+    @media (max-width: 760px) {
+      main {
+        padding: 20px 12px 32px;
+      }
+
+      .summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+
+      th,
+      td {
+        min-width: 180px;
+      }
+
+      .tag-legend div {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>JSFF to VBCS Mapping</h1>
+    <p class="meta">Generated for bug workspace <code>jsff-mapping-vbcs</code> on 2026-06-17 15:26:01 IST. Updated on 2026-06-17 17:48:00 IST.</p>
+
+    <section class="summary" aria-label="Mapping summary">
+      <div><strong>77</strong><span>Unique JSFF pages reviewed</span></div>
+      <div><strong>28</strong><span>VBCS modules listed</span></div>
+      <div><strong>77</strong><span>VBCS mapping references</span></div>
+      <div><strong>4</strong><span>No supported mapping in local repos</span></div>
+    </section>
+
+    <table>
+      <thead>
+        <tr>
+          <th>VBCS page</th>
+          <th>VBCS name</th>
+          <th>VBCS URL</th>
+          <th>JSFF count</th>
+          <th>Grouped JSFF files</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><code>AcknowledgePACOVirtual</code></td><td>Purchase Agreement - Acknowledge</td><td class="url-cell"><code>/vbcs/purchase-agreements/manage/supplier-portal-acknowledge</code></td><td>2</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="AcknowledgeAgreement.jsff.xml"><code>AcknowledgeAgreement.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=AcknowledgeAgreement.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="AcknowledgeNotificationAgreementDetails.jsff.xml"><code>AcknowledgeNotificationAgreementDetails.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=AcknowledgeNotificationAgreementDetails.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li></ul></td></tr>
+        <tr><td><code>AcknowledgePOCOVirtual</code></td><td>Purchase Order - Acknowledge</td><td class="url-cell"><code>/vbcs/purchase-orders/manage/supplier-portal-acknowledge</code></td><td>2</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="AcknowledgeNotificationOrderDetails.jsff.xml"><code>AcknowledgeNotificationOrderDetails.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=AcknowledgeNotificationOrderDetails.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="AcknowledgePurchaseOrder.jsff.xml"><code>AcknowledgePurchaseOrder.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=AcknowledgePurchaseOrder.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li></ul></td></tr>
+        <tr><td><code>contractsVirtualObject</code></td><td>Contracts virtual object</td><td class="url-cell"><code>/vbcs/purchasing-common/contractsVirtualObject</code></td><td>0</td><td>No mapped JSFF from the supplied list</td></tr>
+        <tr><td><code>EditPurchaseAgreement</code></td><td>Purchase Agreement - Edit</td><td class="url-cell"><code>/vbcs/purchase-agreements/manage/create-edit-view-agreement/edit</code></td><td>6</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="CreatePurchaseAgreementPopup.jsff.xml"><code>CreatePurchaseAgreementPopup.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=CreatePurchaseAgreementPopup.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="DocumentSubmissionErrorsPopup.jsff.xml"><code>DocumentSubmissionErrorsPopup.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=DocumentSubmissionErrorsPopup.jsff.xml</code></span> <span class="badge score">70%</span> <span class="badge weak">Context</span></li><li><input class="jsff-check" type="checkbox" aria-label="EditPurchaseAgreement.jsff.xml"><code>EditPurchaseAgreement.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=EditPurchaseAgreement.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="EditPurchaseAgreementLineDetails.jsff.xml"><code>EditPurchaseAgreementLineDetails.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=EditPurchaseAgreementLineDetails.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ManageApprovalsLocal.jsff.xml"><code>ManageApprovalsLocal.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ManageApprovalsLocal.jsff.xml</code></span> <span class="badge score">70%</span> <span class="badge weak">Context</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewValidationErrorsPopup.jsff.xml"><code>ViewValidationErrorsPopup.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewValidationErrorsPopup.jsff.xml</code></span> <span class="badge score">70%</span> <span class="badge weak">Shared</span> <span class="badge identified">identified by us</span></li></ul></td></tr>
+        <tr><td><code>EditPurchaseOrder</code></td><td>Purchase Order - Edit</td><td class="url-cell"><code>/vbcs/purchase-orders/manage/create-edit-view-order/edit</code></td><td>8</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="DocumentSubmissionErrorsPopup.jsff.xml"><code>DocumentSubmissionErrorsPopup.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=DocumentSubmissionErrorsPopup.jsff.xml</code></span> <span class="badge score">70%</span> <span class="badge weak">Context</span></li><li><input class="jsff-check" type="checkbox" aria-label="EditPurchaseOrder.jsff.xml"><code>EditPurchaseOrder.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=EditPurchaseOrder.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="EditPurchaseOrderConfigurationDetails.jsff.xml"><code>EditPurchaseOrderConfigurationDetails.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=EditPurchaseOrderConfigurationDetails.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="EditPurchaseOrderDistribution.jsff.xml"><code>EditPurchaseOrderDistribution.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=EditPurchaseOrderDistribution.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="EditPurchaseOrderLine.jsff.xml"><code>EditPurchaseOrderLine.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=EditPurchaseOrderLine.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="EditPurchaseOrderSchedule.jsff.xml"><code>EditPurchaseOrderSchedule.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=EditPurchaseOrderSchedule.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ManageApprovalsLocal.jsff.xml"><code>ManageApprovalsLocal.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ManageApprovalsLocal.jsff.xml</code></span> <span class="badge score">70%</span> <span class="badge weak">Context</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewValidationErrorsPopup.jsff.xml"><code>ViewValidationErrorsPopup.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewValidationErrorsPopup.jsff.xml</code></span> <span class="badge score">70%</span> <span class="badge weak">Shared</span> <span class="badge identified">identified by us</span></li></ul></td></tr>
+        <tr><td><code>EditRequisitionHeader</code></td><td>Requisition - Edit Header</td><td class="url-cell"><code>/vbcs/process-requisitions/edit-requisition-header</code></td><td>1</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="RequisitionSummary.jsff.xml"><code>RequisitionSummary.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=RequisitionSummary.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li></ul></td></tr>
+        <tr><td><code>procurementApprovedSupplierListEntriesVirtual</code></td><td>Approved Supplier List Entries - Search</td><td class="url-cell"><code>/vbcs/approved-supplier-lists/manage/search-create-edit</code></td><td>3</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="ApprovedSupplierListManage.jsff.xml"><code>ApprovedSupplierListManage.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ApprovedSupplierListManage.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="ApprovedSupplierListView.jsff.xml"><code>ApprovedSupplierListView.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ApprovedSupplierListView.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="EnterApprovedSupplierList.jsff.xml"><code>EnterApprovedSupplierList.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=EnterApprovedSupplierList.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li></ul></td></tr>
+        <tr><td><code>PurchaseAgreementsInSupplierPortalVirtual</code></td><td>Purchase Agreement - View (Supplier)</td><td class="url-cell"><code>/vbcs/purchase-agreements/manage/supplier-portal-view</code></td><td>0</td><td>No mapped JSFF from the supplied list</td></tr>
+        <tr><td><code>PurchaseAgreementsSupplierWorkbenchVirtual</code></td><td>Purchase Agreement - Supplier Search</td><td class="url-cell"><code>/vbcs/purchase-agreements/manage/supplier-workbench</code></td><td>2</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="SupplierAgreementHeaderSearch.jsff.xml"><code>SupplierAgreementHeaderSearch.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=SupplierAgreementHeaderSearch.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="SupplierAgreementLineSearch.jsff.xml"><code>SupplierAgreementLineSearch.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=SupplierAgreementLineSearch.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li></ul></td></tr>
+        <tr><td><code>PurchaseAgreementsVirtual</code></td><td>Purchase Agreement - View</td><td class="url-cell"><code>/vbcs/purchase-agreements/manage/view</code></td><td>2</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="ViewAgreementHeader.jsff.xml"><code>ViewAgreementHeader.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewAgreementHeader.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewAgreementLine.jsff.xml"><code>ViewAgreementLine.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewAgreementLine.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li></ul></td></tr>
+        <tr><td><code>PurchaseAgreementsWorkbenchVirtual</code></td><td>Purchase Agreement - Search</td><td class="url-cell"><code>/vbcs/purchase-agreements/manage/workbench</code></td><td>4</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="AgreementsOverview.jsff.xml"><code>AgreementsOverview.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=AgreementsOverview.jsff.xml</code></span> <span class="badge score">65%</span> <span class="badge weak">Likely, weaker</span></li><li><input class="jsff-check" type="checkbox" aria-label="PurchaseAgreementHeaderSearch.jsff.xml"><code>PurchaseAgreementHeaderSearch.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=PurchaseAgreementHeaderSearch.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="PurchaseAgreementLineSearch.jsff.xml"><code>PurchaseAgreementLineSearch.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=PurchaseAgreementLineSearch.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="PurchasingWorkareaAgreements.jsff.xml"><code>PurchasingWorkareaAgreements.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=PurchasingWorkareaAgreements.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li></ul></td></tr>
+        <tr><td><code>PurchaseOrdersManageSearchVirtual</code></td><td>Purchase Order - Search</td><td class="url-cell"><code>/vbcs/purchase-orders/manage/search</code></td><td>4</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="PurchaseOrderHeaderSearch.jsff.xml"><code>PurchaseOrderHeaderSearch.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=PurchaseOrderHeaderSearch.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="PurchaseOrderOverview.jsff.xml"><code>PurchaseOrderOverview.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=PurchaseOrderOverview.jsff.xml</code></span> <span class="badge score">65%</span> <span class="badge weak">Likely, weaker</span></li><li><input class="jsff-check" type="checkbox" aria-label="PurchaseOrderScheduleSearch.jsff.xml"><code>PurchaseOrderScheduleSearch.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=PurchaseOrderScheduleSearch.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="PurchasingWorkareaOrders.jsff.xml"><code>PurchasingWorkareaOrders.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=PurchasingWorkareaOrders.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li></ul></td></tr>
+        <tr><td><code>PurchaseOrdersManageSupplierSearchVirtual</code></td><td>Purchase Order - Search in Supplier Portal</td><td class="url-cell"><code>/vbcs/purchase-orders/manage/supplier-portal-search</code></td><td>3</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="SupplierOrderHeaderSearch.jsff.xml"><code>SupplierOrderHeaderSearch.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=SupplierOrderHeaderSearch.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="SupplierOrderScheduleSearch.jsff.xml"><code>SupplierOrderScheduleSearch.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=SupplierOrderScheduleSearch.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="SupplierOrderSearch.jsff.xml"><code>SupplierOrderSearch.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=SupplierOrderSearch.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li></ul></td></tr>
+        <tr><td><code>purchaseOrdersVirtual</code></td><td>Purchase Order - View</td><td class="url-cell"><code>/vbcs/purchase-orders/manage/view</code></td><td>10</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="OrderLifecycleContextualIntegration.jsff.xml"><code>OrderLifecycleContextualIntegration.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=OrderLifecycleContextualIntegration.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="OrderLifecycleLocal.jsff.xml"><code>OrderLifecycleLocal.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=OrderLifecycleLocal.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ScheduleLifecycleContextualIntegration.jsff.xml"><code>ScheduleLifecycleContextualIntegration.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ScheduleLifecycleContextualIntegration.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="ScheduleLifecycleLocal.jsff.xml"><code>ScheduleLifecycleLocal.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ScheduleLifecycleLocal.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewConfigurationDetails.jsff.xml"><code>ViewConfigurationDetails.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewConfigurationDetails.jsff.xml</code></span> <span class="badge score">70%</span> <span class="badge weak">Shared</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewOrderDistributionLocal.jsff.xml"><code>ViewOrderDistributionLocal.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewOrderDistributionLocal.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewOrderLineLocal.jsff.xml"><code>ViewOrderLineLocal.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewOrderLineLocal.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewOrderLocal.jsff.xml"><code>ViewOrderLocal.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewOrderLocal.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewOrderMain.jsff.xml"><code>ViewOrderMain.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewOrderMain.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewOrderScheduleLocal.jsff.xml"><code>ViewOrderScheduleLocal.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewOrderScheduleLocal.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li></ul></td></tr>
+        <tr><td><code>PurchasingDocumentChangesAgreementVirtual</code></td><td>Purchasing Agreement Document Changes</td><td class="url-cell"><code>/vbcs/purchase-agreements/manage/document-changes</code></td><td>3</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="AgreementCOLineView.jsff.xml"><code>AgreementCOLineView.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=AgreementCOLineView.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="AgreementCOView.jsff.xml"><code>AgreementCOView.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=AgreementCOView.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="AgreementReviewChanges.jsff.xml"><code>AgreementReviewChanges.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=AgreementReviewChanges.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li></ul></td></tr>
+        <tr><td><code>PurchasingDocumentChangesVirtual</code></td><td>Purchasing Document Changes</td><td class="url-cell"><code>/vbcs/purchase-orders/manage/document-changes</code></td><td>10</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="OrderReviewChanges.jsff.xml"><code>OrderReviewChanges.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=OrderReviewChanges.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span> <span class="badge identified">identified by us</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewCOHistory.jsff.xml"><code>ViewCOHistory.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewCOHistory.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewChangeOrderDistribution.jsff.xml"><code>ViewChangeOrderDistribution.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewChangeOrderDistribution.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewChangeOrderHeader.jsff.xml"><code>ViewChangeOrderHeader.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewChangeOrderHeader.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewChangeOrderLine.jsff.xml"><code>ViewChangeOrderLine.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewChangeOrderLine.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewChangeOrderSchedule.jsff.xml"><code>ViewChangeOrderSchedule.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewChangeOrderSchedule.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewConfigurationDetails.jsff.xml"><code>ViewConfigurationDetails.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewConfigurationDetails.jsff.xml</code></span> <span class="badge score">70%</span> <span class="badge weak">Shared</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewDocumentHistoryLocal.jsff.xml"><code>ViewDocumentHistoryLocal.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewDocumentHistoryLocal.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewOrderPendingCO.jsff.xml"><code>ViewOrderPendingCO.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewOrderPendingCO.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ViewRevisionHistory.jsff.xml"><code>ViewRevisionHistory.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ViewRevisionHistory.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li></ul></td></tr>
+        <tr><td><code>recentPurchasingDocumentsVirtual</code></td><td>Recent Purchasing Documents</td><td class="url-cell"><code>/vbcs/purchasing/recent-documents</code></td><td>1</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="PurchasingWorkareaRecentItems.jsff.xml"><code>PurchasingWorkareaRecentItems.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=PurchasingWorkareaRecentItems.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li></ul></td></tr>
+        <tr><td><code>RequisitionLinesManageSearchVirtual</code></td><td>Process Requisitions - Search</td><td class="url-cell"><code>/vbcs/process-requisitions/search</code></td><td>2</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="DemandWorkbenchSearch.jsff.xml"><code>DemandWorkbenchSearch.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=DemandWorkbenchSearch.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="PurchasingWorkareaRequisitions.jsff.xml"><code>PurchasingWorkareaRequisitions.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=PurchasingWorkareaRequisitions.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li></ul></td></tr>
+        <tr><td><code>StagedDocumentVirtual</code></td><td>Staged Document - View/Edit</td><td class="url-cell"><code>/vbcs/process-requisitions/staged-document</code></td><td>2</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="DocumentSubmissionErrorsPopup.jsff.xml"><code>DocumentSubmissionErrorsPopup.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=DocumentSubmissionErrorsPopup.jsff.xml</code></span> <span class="badge score">70%</span> <span class="badge weak">Context</span></li><li><input class="jsff-check" type="checkbox" aria-label="EditDocumentBuilder.jsff.xml"><code>EditDocumentBuilder.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=EditDocumentBuilder.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li></ul></td></tr>
+        <tr><td><code>StagedDocumentsVirtual</code></td><td>Staged Documents - Search</td><td class="url-cell"><code>/vbcs/process-requisitions/staged-documents</code></td><td>2</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="DocumentBuilder.jsff.xml"><code>DocumentBuilder.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=DocumentBuilder.jsff.xml</code></span> <span class="badge score">85%</span> <span class="badge likely">Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="DocumentSubmissionErrorsPopup.jsff.xml"><code>DocumentSubmissionErrorsPopup.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=DocumentSubmissionErrorsPopup.jsff.xml</code></span> <span class="badge score">70%</span> <span class="badge weak">Context</span></li></ul></td></tr>
+        <tr><td>No single direct VBCS module</td><td>Multiple workarea destinations</td><td class="url-cell"><code>Multiple destination routes; see mapped rows</code></td><td>2</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="Overview.jsff.xml"><code>Overview.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=Overview.jsff.xml</code></span> <span class="badge score">50%</span> <span class="badge weak">Weak</span></li><li><input class="jsff-check" type="checkbox" aria-label="PurchasingWorkareaQuickSearch.jsff.xml"><code>PurchasingWorkareaQuickSearch.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=PurchasingWorkareaQuickSearch.jsff.xml</code></span> <span class="badge score">50%</span> <span class="badge weak">Weak</span></li></ul></td></tr>
+        <tr><td><code>buyer-assignment-rules</code></td><td>Buyer Assignment Rules - Manage</td><td class="url-cell"><code>/vbcs/purchasing-setup/buyer-assignment-rules/manage</code></td><td>1</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="ManageBuyerAssignmentRules.jsff.xml"><code>ManageBuyerAssignmentRules.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ManageBuyerAssignmentRules.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li></ul></td></tr>
+        <tr><td><code>change-order-templates</code></td><td>Change Order Template - Create/Edit</td><td class="url-cell"><code>/vbcs/purchasing-setup/change-order-templates/create-edit</code></td><td>1</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="CreateOrEditChangeOrderTemplate.jsff.xml"><code>CreateOrEditChangeOrderTemplate.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=CreateOrEditChangeOrderTemplate.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li></ul></td></tr>
+        <tr><td><code>document-styles</code></td><td>Document Styles - Manage/Create/Edit</td><td class="url-cell"><code>/vbcs/purchasing-setup/document-styles/manage</code></td><td>2</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="DocumentStylesCreateOrEdit.jsff.xml"><code>DocumentStylesCreateOrEdit.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=DocumentStylesCreateOrEdit.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="DocumentStylesManage.jsff.xml"><code>DocumentStylesManage.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=DocumentStylesManage.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li></ul></td></tr>
+        <tr><td><code>line-types</code></td><td>Purchasing Line Types - Manage</td><td class="url-cell"><code>/vbcs/purchasing-setup/line-types/manage</code></td><td>1</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="LineTypeSearch.jsff.xml"><code>LineTypeSearch.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=LineTypeSearch.jsff.xml</code></span> <span class="badge score">90%</span> <span class="badge likely">Likely</span></li></ul></td></tr>
+        <tr><td><code>procurement-agents</code></td><td>Procurement Agents - Manage/Create/Edit</td><td class="url-cell"><code>/vbcs/purchasing-setup/procurement-agents/manage</code></td><td>2</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="CreateOrEditProcurementAgent.jsff.xml"><code>CreateOrEditProcurementAgent.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=CreateOrEditProcurementAgent.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li><li><input class="jsff-check" type="checkbox" aria-label="ManageProcurementAgent.jsff.xml"><code>ManageProcurementAgent.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ManageProcurementAgent.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li></ul></td></tr>
+        <tr><td><code>procurement-business-functions</code></td><td>Configure Procurement Business Functions</td><td class="url-cell"><code>/vbcs/purchasing-setup/procurement-business-functions/manage</code></td><td>1</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="ProcurementOptions.jsff.xml"><code>ProcurementOptions.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=ProcurementOptions.jsff.xml</code></span> <span class="badge score">90%</span> <span class="badge likely">Likely</span></li></ul></td></tr>
+        <tr><td><code>procurement-document-numberings</code></td><td>Document Numbering - Manage</td><td class="url-cell"><code>/vbcs/purchasing-setup/procurement-document-numberings/manage</code></td><td>1</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="DocNumberingLocal.jsff.xml"><code>DocNumberingLocal.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=DocNumberingLocal.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li></ul></td></tr>
+        <tr><td><code>un-numbers</code></td><td>UN Numbers - Manage</td><td class="url-cell"><code>/vbcs/purchasing-setup/un-numbers/manage</code></td><td>1</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="UnNumbers.jsff.xml"><code>UnNumbers.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=UnNumbers.jsff.xml</code></span> <span class="badge score">95%</span> <span class="badge proven">Proven/Likely</span></li></ul></td></tr>
+        <tr><td>No supported mapping in local repositories</td><td>No local VBCS page found</td><td class="url-cell"><code>No local VBCS route found</code></td><td>4</td><td><ul class="jsff-list"><li><input class="jsff-check" type="checkbox" aria-label="DocumentApprovalRequestNotificationDetailsRegionPage.jsff.xml"><code>DocumentApprovalRequestNotificationDetailsRegionPage.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=DocumentApprovalRequestNotificationDetailsRegionPage.jsff.xml</code></span> <span class="badge score">0%</span> <span class="badge none">Notification flow</span></li><li><input class="jsff-check" type="checkbox" aria-label="DocumentApprovalRequestNotificationHeaderDetailsRegionPage.jsff.xml"><code>DocumentApprovalRequestNotificationHeaderDetailsRegionPage.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=DocumentApprovalRequestNotificationHeaderDetailsRegionPage.jsff.xml</code></span> <span class="badge score">0%</span> <span class="badge none">Notification flow</span></li><li><input class="jsff-check" type="checkbox" aria-label="DocumentApprovalRequestNotificationLineDetailsRegionPage.jsff.xml"><code>DocumentApprovalRequestNotificationLineDetailsRegionPage.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=DocumentApprovalRequestNotificationLineDetailsRegionPage.jsff.xml</code></span> <span class="badge score">0%</span> <span class="badge none">Notification flow</span></li><li><input class="jsff-check" type="checkbox" aria-label="DocumentApprovalRequestNotificationMainRegionPage.jsff.xml"><code>DocumentApprovalRequestNotificationMainRegionPage.jsff.xml</code> <span class="jsff-path">JSFF URL: <code>codesearch://fusionapps/prc?full=DocumentApprovalRequestNotificationMainRegionPage.jsff.xml</code></span> <span class="badge score">0%</span> <span class="badge none">Notification flow</span></li></ul></td></tr>
+      </tbody>
+    </table>
+
+    <section class="notes">
+      <p><strong>Evidence note:</strong> CodeSearch evidence was captured under <code>artifacts/commands/vm/</code>. Local VBCS setup evidence was checked under <code>/Users/shivankh/ALM REPOS/purchasing-common-ui</code>, <code>purchasing-ui</code>, and <code>purchasing-public-ui</code>. Key anchors included notification acknowledgment flows, agreement and order change-order flows, edit purchase order/detail flows, edit purchase agreement flow, approved supplier list entry flow, process-demand document builder flows, buyer and supplier search flows, workarea flows, PO view-document flows, view-document-history flows, and setup flows.</p>
+      <p><strong>Interpretation rule:</strong> Rows marked as no supported mapping were not forced into unrelated VBCS candidates from the local repositories. Where a JSFF is shared by document context, the row lists each corresponding VBCS module. VBCS URLs are route-style locators; JSFF URLs are CodeSearch-style source locators.</p>
+      <p><strong>Display rule:</strong> Each VBCS page is grouped into one row. Every JSFF entry has a checkbox, JSFF CodeSearch URL, confidence score, confidence label, and the <span class="badge identified">identified by us</span> flag where applicable.</p>
+      <p><strong>Tag legend:</strong></p>
+      <dl class="tag-legend">
+        <div><dt><span class="badge score">95%</span></dt><dd>Confidence score. Higher means the JSFF-to-VBCS mapping is more direct and better supported.</dd></div>
+        <div><dt><span class="badge proven">Proven/Likely</span></dt><dd>Strong mapping. The JSFF name and flow context directly match the VBCS page.</dd></div>
+        <div><dt><span class="badge likely">Likely</span></dt><dd>Good mapping. The JSFF belongs to the same business flow, but the match is based on flow context rather than an exact one-to-one page name.</dd></div>
+        <div><dt><span class="badge weak">Context</span></dt><dd>Supporting or shared JSFF used inside a mapped flow, such as an approvals or errors region.</dd></div>
+        <div><dt><span class="badge weak">Shared</span></dt><dd>The JSFF can appear under more than one VBCS page because the same region is reused by multiple flows.</dd></div>
+        <div><dt><span class="badge weak">Likely, weaker</span></dt><dd>Possible mapping, but less direct than the other likely mappings and should be reviewed manually.</dd></div>
+        <div><dt><span class="badge weak">Weak</span></dt><dd>Broad workarea-level JSFF. It may lead to several VBCS pages instead of one exact VBCS module.</dd></div>
+        <div><dt><span class="badge identified">identified by us</span></dt><dd>This JSFF was already identified by your team before this mapping pass.</dd></div>
+        <div><dt><span class="badge none">Notification flow</span></dt><dd>Notification or task-detail JSFF. It was not mapped because no matching notification VBCS module was included in the supplied candidate list.</dd></div>
+      </dl>
+    </section>
+  </main>
+</body>
+</html>
