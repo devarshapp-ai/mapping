@@ -6,25 +6,177 @@
   "assignments": {
     "AcknowledgePACOVirtual": "Lakshya",
     "AcknowledgePOCOVirtual": "Devarsh",
+    "contractsVirtualObject": "Skip??",
     "EditPurchaseAgreement": "Shivang",
     "EditPurchaseOrder": "Jainam",
     "EditRequisitionHeader": "POR",
+    "procurementApprovedSupplierListEntriesVirtual": "Lakshya",
     "PurchaseAgreementsInSupplierPortalVirtual": "Harshil",
     "PurchaseAgreementsSupplierWorkbenchVirtual": "Parth",
     "PurchaseAgreementsVirtual": "Devarsh",
     "PurchaseAgreementsWorkbenchVirtual": "Jaybhai",
     "PurchaseOrdersManageSearchVirtual": "Jayminbhai",
     "PurchaseOrdersManageSupplierSearchVirtual": "Mukund",
+    "purchaseOrdersVirtual": "Amber",
+    "PurchasingDocumentChangesAgreementVirtual": "Pratham",
     "PurchasingDocumentChangesVirtual": "Yash",
+    "recentPurchasingDocumentsVirtual": "Mukund",
     "RequisitionLinesManageSearchVirtual": "Harshil",
-    "change-order-templates": "Not Customisation",
-    "contractsVirtualObject": "Skip??",
+    "StagedDocumentVirtual": "Harshil",
+    "StagedDocumentsVirtual": "Harshil",
+    "No single direct VBCS module": "",
+    "buyer-assignment-rules": "Mananbhai",
+    "change-order-templates": "Shivang",
     "document-styles": "Not Customisation",
     "line-types": "Not Customisation",
     "procurement-agents": "Not Customisation",
-    "procurementApprovedSupplierListEntriesVirtual": "Lakshya",
-    "purchaseOrdersVirtual": "Amber",
-    "un-numbers": "Not Customisation"
+    "procurement-business-functions": "Mananbhai",
+    "procurement-document-numberings": "Jaybhai",
+    "un-numbers": "Jainam",
+    "No supported mapping in local repositories": ""
   },
-  "checked": {}
-}
+  "checked": {
+    "AcknowledgePACOVirtual": {
+      "AcknowledgeAgreement.jsff": false,
+      "AcknowledgeNotificationAgreementDetails.jsff": false
+    },
+    "AcknowledgePOCOVirtual": {
+      "AcknowledgeNotificationOrderDetails.jsff": false,
+      "AcknowledgePurchaseOrder.jsff": false,
+      "ViewValidationErrorsPopup.jsff": false,
+      "OrderLifecycleContextualIntegration.jsff": false,
+      "ScheduleLifecycleContextualIntegration.jsff": false
+    },
+    "EditPurchaseAgreement": {
+      "CreatePurchaseAgreementPopup.jsff": false,
+      "DocumentSubmissionErrorsPopup.jsff": false,
+      "EditPurchaseAgreement.jsff": false,
+      "EditPurchaseAgreementLineDetails.jsff": false,
+      "ManageApprovalsLocal.jsff": false,
+      "ViewValidationErrorsPopup.jsff": false
+    },
+    "EditPurchaseOrder": {
+      "DocumentSubmissionErrorsPopup.jsff": false,
+      "EditPurchaseOrder.jsff": false,
+      "EditPurchaseOrderConfigurationDetails.jsff": false,
+      "EditPurchaseOrderDistribution.jsff": false,
+      "EditPurchaseOrderLine.jsff": false,
+      "EditPurchaseOrderSchedule.jsff": false,
+      "ManageApprovalsLocal.jsff": false,
+      "ViewValidationErrorsPopup.jsff": false
+    },
+    "EditRequisitionHeader": {
+      "RequisitionSummary.jsff": false
+    },
+    "procurementApprovedSupplierListEntriesVirtual": {
+      "ApprovedSupplierListManage.jsff": false,
+      "ApprovedSupplierListView.jsff": false,
+      "EnterApprovedSupplierList.jsff": false
+    },
+    "PurchaseAgreementsInSupplierPortalVirtual": {
+      "ViewValidationErrorsPopup.jsff": false
+    },
+    "PurchaseAgreementsSupplierWorkbenchVirtual": {
+      "SupplierAgreementHeaderSearch.jsff": false,
+      "SupplierAgreementLineSearch.jsff": false
+    },
+    "PurchaseAgreementsVirtual": {
+      "ViewAgreementHeader.jsff": false,
+      "ViewAgreementLine.jsff": false,
+      "ViewValidationErrorsPopup.jsff": false
+    },
+    "PurchaseAgreementsWorkbenchVirtual": {
+      "AgreementsOverview.jsff": true,
+      "PurchaseAgreementHeaderSearch.jsff": true,
+      "PurchaseAgreementLineSearch.jsff": true,
+      "PurchasingWorkareaAgreements.jsff": true
+    },
+    "PurchaseOrdersManageSearchVirtual": {
+      "PurchaseOrderHeaderSearch.jsff": false,
+      "PurchaseOrderOverview.jsff": false,
+      "PurchaseOrderScheduleSearch.jsff": false,
+      "PurchasingWorkareaOrders.jsff": false
+    },
+    "PurchaseOrdersManageSupplierSearchVirtual": {
+      "SupplierOrderHeaderSearch.jsff": true,
+      "SupplierOrderScheduleSearch.jsff": true,
+      "SupplierOrderSearch.jsff": true
+    },
+    "purchaseOrdersVirtual": {
+      "OrderLifecycleContextualIntegration.jsff": false,
+      "OrderLifecycleLocal.jsff": false,
+      "ScheduleLifecycleContextualIntegration.jsff": false,
+      "ScheduleLifecycleLocal.jsff": false,
+      "ViewConfigurationDetails.jsff": false,
+      "ViewOrderDistributionLocal.jsff": false,
+      "ViewOrderLineLocal.jsff": false,
+      "ViewOrderLocal.jsff": false,
+      "ViewOrderMain.jsff": false,
+      "ViewOrderScheduleLocal.jsff": false,
+      "ViewValidationErrorsPopup.jsff": false
+    },
+    "PurchasingDocumentChangesAgreementVirtual": {
+      "AgreementCOLineView.jsff": false,
+      "AgreementCOView.jsff": false,
+      "AgreementReviewChanges.jsff": false
+    },
+    "PurchasingDocumentChangesVirtual": {
+      "OrderReviewChanges.jsff": false,
+      "ViewCOHistory.jsff": false,
+      "ViewChangeOrderDistribution.jsff": false,
+      "ViewChangeOrderHeader.jsff": false,
+      "ViewChangeOrderLine.jsff": false,
+      "ViewChangeOrderSchedule.jsff": false,
+      "ViewConfigurationDetails.jsff": false,
+      "ViewDocumentHistoryLocal.jsff": false,
+      "ViewOrderPendingCO.jsff": false,
+      "ViewRevisionHistory.jsff": false
+    },
+    "recentPurchasingDocumentsVirtual": {
+      "PurchasingWorkareaRecentItems.jsff": true
+    },
+    "RequisitionLinesManageSearchVirtual": {
+      "DemandWorkbenchSearch.jsff": false,
+      "PurchasingWorkareaRequisitions.jsff": false,
+      "RequisitionSummary.jsff": false
+    },
+    "StagedDocumentVirtual": {
+      "DocumentSubmissionErrorsPopup.jsff": false,
+      "EditDocumentBuilder.jsff": false
+    },
+    "StagedDocumentsVirtual": {
+      "DocumentBuilder.jsff": false,
+      "DocumentSubmissionErrorsPopup.jsff": false
+    },
+    "No single direct VBCS module": {
+      "Overview.jsff": false,
+      "PurchasingWorkareaQuickSearch.jsff": false
+    },
+    "buyer-assignment-rules": {
+      "ManageBuyerAssignmentRules.jsff": true
+    },
+    "change-order-templates": {
+      "CreateOrEditChangeOrderTemplate.jsff": false
+    },
+    "document-styles": {
+      "DocumentStylesCreateOrEdit.jsff": false,
+      "DocumentStylesManage.jsff": false
+    },
+    "line-types": {
+      "LineTypeSearch.jsff": false
+    },
+    "procurement-agents": {
+      "CreateOrEditProcurementAgent.jsff": false,
+      "ManageProcurementAgent.jsff": false
+    },
+    "procurement-business-functions": {
+      "ProcurementOptions.jsff": true
+    },
+    "procurement-document-numberings": {
+      "DocNumberingLocal.jsff": false
+    },
+    "un-numbers": {
+      "UnNumbers.jsff": false
+    }
+  }
+}\n
