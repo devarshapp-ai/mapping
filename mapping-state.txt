@@ -1,39 +1,39 @@
 {
   "_meta": {
     "description": "Assignment and JSFF checkbox state for git-mapping/index.html.",
-    "note": "The page reads this file with fetch(). Browser security prevents silent writes to local files, so use Download state txt or Load state txt from the page."
+    "note": "The page reads this file with fetch(). Browser security prevents silent writes to local files, so use Download state txt from the page."
   },
   "assignments": {
     "AcknowledgePACOVirtual": "Lakshya",
     "AcknowledgePOCOVirtual": "Devarsh",
+    "contractsVirtualObject": "Skip??",
     "EditPurchaseAgreement": "Shivang",
     "EditPurchaseOrder": "Jainam",
     "EditRequisitionHeader": "POR",
-    "No single direct VBCS module": "",
-    "No supported mapping in local repositories": "",
+    "procurementApprovedSupplierListEntriesVirtual": "Lakshya",
     "PurchaseAgreementsInSupplierPortalVirtual": "Harshil",
     "PurchaseAgreementsSupplierWorkbenchVirtual": "Parth",
     "PurchaseAgreementsVirtual": "Devarsh",
     "PurchaseAgreementsWorkbenchVirtual": "Jaybhai",
     "PurchaseOrdersManageSearchVirtual": "Jayminbhai",
     "PurchaseOrdersManageSupplierSearchVirtual": "Mukund",
+    "purchaseOrdersVirtual": "Amber",
     "PurchasingDocumentChangesAgreementVirtual": "Pratham",
     "PurchasingDocumentChangesVirtual": "Yash",
+    "recentPurchasingDocumentsVirtual": "Mukund",
     "RequisitionLinesManageSearchVirtual": "Harshil",
     "StagedDocumentVirtual": "Harshil",
     "StagedDocumentsVirtual": "Harshil",
+    "No single direct VBCS module": "",
     "buyer-assignment-rules": "Mananbhai",
     "change-order-templates": "Shivang",
-    "contractsVirtualObject": "Skip??",
     "document-styles": "Not Customisation",
-    "line-types": "Not Customisation",
-    "procurement-agents": "Not Customisation",
+    "line-types": "NIsarg",
+    "procurement-agents": "Nisarg",
     "procurement-business-functions": "Mananbhai",
     "procurement-document-numberings": "Jaybhai",
-    "procurementApprovedSupplierListEntriesVirtual": "Lakshya",
-    "purchaseOrdersVirtual": "Amber",
-    "recentPurchasingDocumentsVirtual": "Mukund",
-    "un-numbers": "Jainam"
+    "un-numbers": "Jainam",
+    "No supported mapping in local repositories": ""
   },
   "checked": {
     "AcknowledgePACOVirtual": {
@@ -43,9 +43,9 @@
     "AcknowledgePOCOVirtual": {
       "AcknowledgeNotificationOrderDetails.jsff": false,
       "AcknowledgePurchaseOrder.jsff": false,
+      "ViewValidationErrorsPopup.jsff": false,
       "OrderLifecycleContextualIntegration.jsff": false,
-      "ScheduleLifecycleContextualIntegration.jsff": false,
-      "ViewValidationErrorsPopup.jsff": false
+      "ScheduleLifecycleContextualIntegration.jsff": false
     },
     "EditPurchaseAgreement": {
       "CreatePurchaseAgreementPopup.jsff": false,
@@ -68,9 +68,10 @@
     "EditRequisitionHeader": {
       "RequisitionSummary.jsff": false
     },
-    "No single direct VBCS module": {
-      "Overview.jsff": false,
-      "PurchasingWorkareaQuickSearch.jsff": false
+    "procurementApprovedSupplierListEntriesVirtual": {
+      "ApprovedSupplierListManage.jsff": true,
+      "ApprovedSupplierListView.jsff": true,
+      "EnterApprovedSupplierList.jsff": true
     },
     "PurchaseAgreementsInSupplierPortalVirtual": {
       "ViewValidationErrorsPopup.jsff": false
@@ -101,6 +102,19 @@
       "SupplierOrderScheduleSearch.jsff": true,
       "SupplierOrderSearch.jsff": true
     },
+    "purchaseOrdersVirtual": {
+      "OrderLifecycleContextualIntegration.jsff": false,
+      "OrderLifecycleLocal.jsff": false,
+      "ScheduleLifecycleContextualIntegration.jsff": false,
+      "ScheduleLifecycleLocal.jsff": false,
+      "ViewConfigurationDetails.jsff": false,
+      "ViewOrderDistributionLocal.jsff": false,
+      "ViewOrderLineLocal.jsff": false,
+      "ViewOrderLocal.jsff": false,
+      "ViewOrderMain.jsff": false,
+      "ViewOrderScheduleLocal.jsff": false,
+      "ViewValidationErrorsPopup.jsff": false
+    },
     "PurchasingDocumentChangesAgreementVirtual": {
       "AgreementCOLineView.jsff": false,
       "AgreementCOView.jsff": false,
@@ -118,6 +132,9 @@
       "ViewOrderPendingCO.jsff": false,
       "ViewRevisionHistory.jsff": false
     },
+    "recentPurchasingDocumentsVirtual": {
+      "PurchasingWorkareaRecentItems.jsff": true
+    },
     "RequisitionLinesManageSearchVirtual": {
       "DemandWorkbenchSearch.jsff": false,
       "PurchasingWorkareaRequisitions.jsff": false,
@@ -131,6 +148,10 @@
       "DocumentBuilder.jsff": false,
       "DocumentSubmissionErrorsPopup.jsff": false
     },
+    "No single direct VBCS module": {
+      "Overview.jsff": false,
+      "PurchasingWorkareaQuickSearch.jsff": false
+    },
     "buyer-assignment-rules": {
       "ManageBuyerAssignmentRules.jsff": true
     },
@@ -142,11 +163,11 @@
       "DocumentStylesManage.jsff": false
     },
     "line-types": {
-      "LineTypeSearch.jsff": false
+      "LineTypeSearch.jsff": true
     },
     "procurement-agents": {
-      "CreateOrEditProcurementAgent.jsff": false,
-      "ManageProcurementAgent.jsff": false
+      "CreateOrEditProcurementAgent.jsff": true,
+      "ManageProcurementAgent.jsff": true
     },
     "procurement-business-functions": {
       "ProcurementOptions.jsff": true
@@ -154,29 +175,8 @@
     "procurement-document-numberings": {
       "DocNumberingLocal.jsff": false
     },
-    "procurementApprovedSupplierListEntriesVirtual": {
-      "ApprovedSupplierListManage.jsff": true,
-      "ApprovedSupplierListView.jsff": true,
-      "EnterApprovedSupplierList.jsff": true
-    },
-    "purchaseOrdersVirtual": {
-      "OrderLifecycleContextualIntegration.jsff": false,
-      "OrderLifecycleLocal.jsff": false,
-      "ScheduleLifecycleContextualIntegration.jsff": false,
-      "ScheduleLifecycleLocal.jsff": false,
-      "ViewConfigurationDetails.jsff": false,
-      "ViewOrderDistributionLocal.jsff": false,
-      "ViewOrderLineLocal.jsff": false,
-      "ViewOrderLocal.jsff": false,
-      "ViewOrderMain.jsff": false,
-      "ViewOrderScheduleLocal.jsff": false,
-      "ViewValidationErrorsPopup.jsff": false
-    },
-    "recentPurchasingDocumentsVirtual": {
-      "PurchasingWorkareaRecentItems.jsff": true
-    },
     "un-numbers": {
       "UnNumbers.jsff": false
     }
   }
-}
+}\n
