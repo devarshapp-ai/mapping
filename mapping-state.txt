@@ -1,0 +1,30 @@
+{
+  "_meta": {
+    "description": "Assignment and JSFF checkbox state for git-mapping/index.html.",
+    "note": "The page reads this file with fetch(). Browser security prevents silent writes to local files, so use Download state txt or Load state txt from the page."
+  },
+  "assignments": {
+    "AcknowledgePACOVirtual": "Lakshya",
+    "AcknowledgePOCOVirtual": "Devarsh",
+    "EditPurchaseAgreement": "Shivang",
+    "EditPurchaseOrder": "Jainam",
+    "EditRequisitionHeader": "POR",
+    "PurchaseAgreementsInSupplierPortalVirtual": "Harshil",
+    "PurchaseAgreementsSupplierWorkbenchVirtual": "Parth",
+    "PurchaseAgreementsVirtual": "Devarsh",
+    "PurchaseAgreementsWorkbenchVirtual": "Jaybhai",
+    "PurchaseOrdersManageSearchVirtual": "Jayminbhai",
+    "PurchaseOrdersManageSupplierSearchVirtual": "Mukund",
+    "PurchasingDocumentChangesVirtual": "Yash",
+    "RequisitionLinesManageSearchVirtual": "Harshil",
+    "change-order-templates": "Not Customisation",
+    "contractsVirtualObject": "Skip??",
+    "document-styles": "Not Customisation",
+    "line-types": "Not Customisation",
+    "procurement-agents": "Not Customisation",
+    "procurementApprovedSupplierListEntriesVirtual": "Lakshya",
+    "purchaseOrdersVirtual": "Amber",
+    "un-numbers": "Not Customisation"
+  },
+  "checked": {}
+}
