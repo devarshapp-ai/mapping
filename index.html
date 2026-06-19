@@ -420,10 +420,22 @@
       white-space: nowrap;
     }
 
-    .state-file {
-      max-width: 240px;
-      color: var(--muted);
-      font-size: 12px;
+    .pending-counter {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 8px;
+      border: 1px solid #f59e0b;
+      border-radius: 8px;
+      padding: 7px 12px;
+      background: #fffbeb;
+      color: #92400e;
+      font-weight: 700;
+    }
+
+    .pending-counter strong {
+      color: #b91c1c;
+      font-size: 20px;
+      line-height: 1;
     }
 
     .state-status {
@@ -511,9 +523,8 @@
 
 
     <section class="state-actions" aria-label="Mapping state actions">
+      <div class="pending-counter" aria-live="polite">Pending rows: <strong id="pendingRowsCount">0</strong></div>
       <button class="state-button" type="button" id="downloadStateButton">Download state txt</button>
-      <label class="state-button" for="loadStateFile">Load state txt</label>
-      <input class="state-file" id="loadStateFile" type="file" accept=".txt,application/json">
       <span class="state-status" id="stateStatus">State loads from mapping-state.txt when available.</span>
     </section>
 
@@ -586,7 +597,7 @@
       var checkboxPrefix = "mapping:jsff:";
       var assignmentPrefix = "mapping:assignment:";
       var stateFileName = "mapping-state.txt";
-      var fallbackState = {"_meta": {"description": "Assignment and JSFF checkbox state for git-mapping/index.html.", "note": "The page reads this file with fetch(). Browser security prevents silent writes to local files, so use Download state txt or Load state txt from the page."}, "assignments": {"AcknowledgePACOVirtual": "Lakshya", "AcknowledgePOCOVirtual": "Devarsh", "EditPurchaseAgreement": "Shivang", "EditPurchaseOrder": "Jainam", "EditRequisitionHeader": "POR", "PurchaseAgreementsInSupplierPortalVirtual": "Harshil", "PurchaseAgreementsSupplierWorkbenchVirtual": "Parth", "PurchaseAgreementsVirtual": "Devarsh", "PurchaseAgreementsWorkbenchVirtual": "Jaybhai", "PurchaseOrdersManageSearchVirtual": "Jayminbhai", "PurchaseOrdersManageSupplierSearchVirtual": "Mukund", "PurchasingDocumentChangesVirtual": "Yash", "RequisitionLinesManageSearchVirtual": "Harshil", "change-order-templates": "Not Customisation", "contractsVirtualObject": "Skip??", "document-styles": "Not Customisation", "line-types": "Not Customisation", "procurement-agents": "Not Customisation", "procurementApprovedSupplierListEntriesVirtual": "Lakshya", "purchaseOrdersVirtual": "Amber", "un-numbers": "Not Customisation"}, "checked": {}};
+      var fallbackState = {"_meta": {"description": "Assignment and JSFF checkbox state for git-mapping/index.html.", "note": "The page reads this file with fetch(). Browser security prevents silent writes to local files, so use Download state txt from the page."}, "assignments": {"AcknowledgePACOVirtual": "Lakshya", "AcknowledgePOCOVirtual": "Devarsh", "EditPurchaseAgreement": "Shivang", "EditPurchaseOrder": "Jainam", "EditRequisitionHeader": "POR", "PurchaseAgreementsInSupplierPortalVirtual": "Harshil", "PurchaseAgreementsSupplierWorkbenchVirtual": "Parth", "PurchaseAgreementsVirtual": "Devarsh", "PurchaseAgreementsWorkbenchVirtual": "Jaybhai", "PurchaseOrdersManageSearchVirtual": "Jayminbhai", "PurchaseOrdersManageSupplierSearchVirtual": "Mukund", "PurchasingDocumentChangesVirtual": "Yash", "RequisitionLinesManageSearchVirtual": "Harshil", "change-order-templates": "Not Customisation", "contractsVirtualObject": "Skip??", "document-styles": "Not Customisation", "line-types": "Not Customisation", "procurement-agents": "Not Customisation", "procurementApprovedSupplierListEntriesVirtual": "Lakshya", "purchaseOrdersVirtual": "Amber", "un-numbers": "Not Customisation"}, "checked": {}};
       var activeState = JSON.parse(JSON.stringify(fallbackState));
 
       function keyPart(value) {
@@ -659,6 +670,20 @@
         row.classList.toggle("row-complete", complete);
       }
 
+      function updatePendingRowsCount() {
+        var pending = 0;
+        document.querySelectorAll("tbody tr").forEach(function (row) {
+          var checks = Array.prototype.slice.call(row.querySelectorAll(".jsff-check"));
+          if (checks.length && checks.some(function (checkbox) { return !checkbox.checked; })) {
+            pending += 1;
+          }
+        });
+        var counter = document.getElementById("pendingRowsCount");
+        if (counter) {
+          counter.textContent = String(pending);
+        }
+      }
+
       function stateChecked(page, jsff) {
         return Boolean(activeState.checked && activeState.checked[page] && activeState.checked[page][jsff]);
       }
@@ -682,8 +707,10 @@
             activeState.checked[checkbox.dataset.page][checkbox.dataset.jsff] = checkbox.checked;
             localStorage.setItem(key, checkbox.checked ? "true" : "false");
             updateRowCompletion(checkbox.closest("tr"));
+            updatePendingRowsCount();
           });
         });
+        updatePendingRowsCount();
 
         document.querySelectorAll(".assignment-control").forEach(function (control) {
           var page = control.dataset.page;
@@ -766,47 +793,7 @@
         setStatus("Downloaded updated mapping-state.txt.");
       }
 
-      function loadStateText(text, sourceLabel) {
-        activeState = JSON.parse(text);
-        localStorage.clear();
-        if (activeState.assignments) {
-          Object.keys(activeState.assignments).forEach(function (page) {
-            localStorage.setItem(assignmentKey(page), activeState.assignments[page] || "");
-          });
-        }
-        if (activeState.checked) {
-          Object.keys(activeState.checked).forEach(function (page) {
-            Object.keys(activeState.checked[page] || {}).forEach(function (jsff) {
-              localStorage.setItem(checkboxKey(page, jsff), activeState.checked[page][jsff] ? "true" : "false");
-            });
-          });
-        }
-        document.querySelectorAll(".assignment-control").forEach(function (control) {
-          var page = control.dataset.page;
-          var value = storedAssignment(page);
-          control.querySelector(".assignment-input").value = value;
-          updateAssignment(control, value);
-          setEditing(control, false);
-        });
-        document.querySelectorAll(".jsff-check").forEach(function (checkbox) {
-          checkbox.checked = localStorage.getItem(checkboxKey(checkbox.dataset.page, checkbox.dataset.jsff)) === "true";
-          updateRowCompletion(checkbox.closest("tr"));
-        });
-        setStatus("Loaded state from " + sourceLabel + ".");
-      }
-
       document.getElementById("downloadStateButton").addEventListener("click", downloadState);
-      document.getElementById("loadStateFile").addEventListener("change", function (event) {
-        var file = event.target.files && event.target.files[0];
-        if (!file) {
-          return;
-        }
-        file.text().then(function (text) {
-          loadStateText(text, file.name);
-        }).catch(function () {
-          setStatus("Could not load the selected state txt file.");
-        });
-      });
 
       fetch(stateFileName, { cache: "no-store" })
         .then(function (response) {
