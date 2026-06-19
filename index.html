@@ -630,6 +630,14 @@
         }
       }
 
+      function parseStateText(text) {
+        var normalized = (text || "").trim();
+        if (normalized.slice(-2) === "\\n") {
+          normalized = normalized.slice(0, -2).trim();
+        }
+        return JSON.parse(normalized);
+      }
+
       function stateAssignment(page) {
         if (activeState.assignments && Object.prototype.hasOwnProperty.call(activeState.assignments, page)) {
           return activeState.assignments[page] || "";
@@ -821,7 +829,7 @@
           return response.text();
         })
         .then(function (text) {
-          activeState = JSON.parse(text);
+          activeState = parseStateText(text);
           syncLocalStorageFromState();
           applyState();
           setStatus("Loaded mapping-state.txt and refreshed browser storage.");
