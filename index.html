@@ -597,6 +597,7 @@
       var checkboxPrefix = "mapping:jsff:";
       var assignmentPrefix = "mapping:assignment:";
       var stateFileName = "mapping-state.txt";
+      var refreshIntervalMs = 5 * 60 * 1000;
       var fallbackState = {"_meta": {"description": "Assignment and JSFF checkbox state for git-mapping/index.html.", "note": "The page reads this file with fetch(). Browser security prevents silent writes to local files, so use Download state txt from the page."}, "assignments": {"AcknowledgePACOVirtual": "Lakshya", "AcknowledgePOCOVirtual": "Devarsh", "EditPurchaseAgreement": "Shivang", "EditPurchaseOrder": "Jainam", "EditRequisitionHeader": "POR", "PurchaseAgreementsInSupplierPortalVirtual": "Harshil", "PurchaseAgreementsSupplierWorkbenchVirtual": "Parth", "PurchaseAgreementsVirtual": "Devarsh", "PurchaseAgreementsWorkbenchVirtual": "Jaybhai", "PurchaseOrdersManageSearchVirtual": "Jayminbhai", "PurchaseOrdersManageSupplierSearchVirtual": "Mukund", "PurchasingDocumentChangesVirtual": "Yash", "RequisitionLinesManageSearchVirtual": "Harshil", "change-order-templates": "Not Customisation", "contractsVirtualObject": "Skip??", "document-styles": "Not Customisation", "line-types": "Not Customisation", "procurement-agents": "Not Customisation", "procurementApprovedSupplierListEntriesVirtual": "Lakshya", "purchaseOrdersVirtual": "Amber", "un-numbers": "Not Customisation"}, "checked": {}};
       var activeState = JSON.parse(JSON.stringify(fallbackState));
 
@@ -794,6 +795,10 @@
       }
 
       document.getElementById("downloadStateButton").addEventListener("click", downloadState);
+
+      window.setInterval(function () {
+        window.location.reload();
+      }, refreshIntervalMs);
 
       fetch(stateFileName, { cache: "no-store" })
         .then(function (response) {
