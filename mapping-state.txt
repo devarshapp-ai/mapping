@@ -41,19 +41,19 @@
       "AcknowledgeNotificationAgreementDetails.jsff": true
     },
     "AcknowledgePOCOVirtual": {
-      "AcknowledgeNotificationOrderDetails.jsff": false,
-      "AcknowledgePurchaseOrder.jsff": false,
-      "ViewValidationErrorsPopup.jsff": false,
-      "OrderLifecycleContextualIntegration.jsff": false,
-      "ScheduleLifecycleContextualIntegration.jsff": false
+      "AcknowledgeNotificationOrderDetails.jsff": true,
+      "AcknowledgePurchaseOrder.jsff": true,
+      "ViewValidationErrorsPopup.jsff": true,
+      "OrderLifecycleContextualIntegration.jsff": true,
+      "ScheduleLifecycleContextualIntegration.jsff": true
     },
     "EditPurchaseAgreement": {
-      "CreatePurchaseAgreementPopup.jsff": false,
-      "DocumentSubmissionErrorsPopup.jsff": false,
-      "EditPurchaseAgreement.jsff": false,
-      "EditPurchaseAgreementLineDetails.jsff": false,
-      "ManageApprovalsLocal.jsff": false,
-      "ViewValidationErrorsPopup.jsff": false
+      "CreatePurchaseAgreementPopup.jsff": true,
+      "DocumentSubmissionErrorsPopup.jsff": true,
+      "EditPurchaseAgreement.jsff": true,
+      "EditPurchaseAgreementLineDetails.jsff": true,
+      "ManageApprovalsLocal.jsff": true,
+      "ViewValidationErrorsPopup.jsff": true
     },
     "EditPurchaseOrder": {
       "DocumentSubmissionErrorsPopup.jsff": false,
@@ -92,10 +92,10 @@
       "PurchasingWorkareaAgreements.jsff": true
     },
     "PurchaseOrdersManageSearchVirtual": {
-      "PurchaseOrderHeaderSearch.jsff": false,
-      "PurchaseOrderOverview.jsff": false,
-      "PurchaseOrderScheduleSearch.jsff": false,
-      "PurchasingWorkareaOrders.jsff": false
+      "PurchaseOrderHeaderSearch.jsff": true,
+      "PurchaseOrderOverview.jsff": true,
+      "PurchaseOrderScheduleSearch.jsff": true,
+      "PurchasingWorkareaOrders.jsff": true
     },
     "PurchaseOrdersManageSupplierSearchVirtual": {
       "SupplierOrderHeaderSearch.jsff": true,
@@ -116,9 +116,9 @@
       "ViewValidationErrorsPopup.jsff": false
     },
     "PurchasingDocumentChangesAgreementVirtual": {
-      "AgreementCOLineView.jsff": false,
-      "AgreementCOView.jsff": false,
-      "AgreementReviewChanges.jsff": false
+      "AgreementCOLineView.jsff": true,
+      "AgreementCOView.jsff": true,
+      "AgreementReviewChanges.jsff": true
     },
     "PurchasingDocumentChangesVirtual": {
       "OrderReviewChanges.jsff": false,
@@ -136,17 +136,17 @@
       "PurchasingWorkareaRecentItems.jsff": true
     },
     "RequisitionLinesManageSearchVirtual": {
-      "DemandWorkbenchSearch.jsff": false,
-      "PurchasingWorkareaRequisitions.jsff": false,
-      "RequisitionSummary.jsff": false
+      "DemandWorkbenchSearch.jsff": true,
+      "PurchasingWorkareaRequisitions.jsff": true,
+      "RequisitionSummary.jsff": true
     },
     "StagedDocumentVirtual": {
-      "DocumentSubmissionErrorsPopup.jsff": false,
-      "EditDocumentBuilder.jsff": false
+      "DocumentSubmissionErrorsPopup.jsff": true,
+      "EditDocumentBuilder.jsff": true
     },
     "StagedDocumentsVirtual": {
-      "DocumentBuilder.jsff": false,
-      "DocumentSubmissionErrorsPopup.jsff": false
+      "DocumentBuilder.jsff": true,
+      "DocumentSubmissionErrorsPopup.jsff": true
     },
     "No single direct VBCS module": {
       "Overview.jsff": false,
@@ -159,8 +159,8 @@
       "CreateOrEditChangeOrderTemplate.jsff": false
     },
     "document-styles": {
-      "DocumentStylesCreateOrEdit.jsff": false,
-      "DocumentStylesManage.jsff": false
+      "DocumentStylesCreateOrEdit.jsff": true,
+      "DocumentStylesManage.jsff": true
     },
     "line-types": {
       "LineTypeSearch.jsff": true
@@ -173,7 +173,7 @@
       "ProcurementOptions.jsff": true
     },
     "procurement-document-numberings": {
-      "DocNumberingLocal.jsff": false
+      "DocNumberingLocal.jsff": true
     },
     "un-numbers": {
       "UnNumbers.jsff": false
