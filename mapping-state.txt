@@ -37,8 +37,8 @@
   },
   "checked": {
     "AcknowledgePACOVirtual": {
-      "AcknowledgeAgreement.jsff": false,
-      "AcknowledgeNotificationAgreementDetails.jsff": false
+      "AcknowledgeAgreement.jsff": true,
+      "AcknowledgeNotificationAgreementDetails.jsff": true
     },
     "AcknowledgePOCOVirtual": {
       "AcknowledgeNotificationOrderDetails.jsff": false,
@@ -69,9 +69,9 @@
       "RequisitionSummary.jsff": false
     },
     "procurementApprovedSupplierListEntriesVirtual": {
-      "ApprovedSupplierListManage.jsff": false,
-      "ApprovedSupplierListView.jsff": false,
-      "EnterApprovedSupplierList.jsff": false
+      "ApprovedSupplierListManage.jsff": true,
+      "ApprovedSupplierListView.jsff": true,
+      "EnterApprovedSupplierList.jsff": true
     },
     "PurchaseAgreementsInSupplierPortalVirtual": {
       "ViewValidationErrorsPopup.jsff": false
