@@ -689,6 +689,19 @@
         return Boolean(activeState.checked && activeState.checked[page] && activeState.checked[page][jsff]);
       }
 
+      function syncLocalStorageFromState() {
+        document.querySelectorAll(".assignment-control").forEach(function (control) {
+          var page = control.dataset.page;
+          localStorage.setItem(assignmentKey(page), stateAssignment(page));
+        });
+        document.querySelectorAll(".jsff-check").forEach(function (checkbox) {
+          localStorage.setItem(
+            checkboxKey(checkbox.dataset.page, checkbox.dataset.jsff),
+            stateChecked(checkbox.dataset.page, checkbox.dataset.jsff) ? "true" : "false"
+          );
+        });
+      }
+
       function applyState() {
         document.querySelectorAll(".jsff-check").forEach(function (checkbox) {
           var key = checkboxKey(checkbox.dataset.page, checkbox.dataset.jsff);
@@ -809,12 +822,14 @@
         })
         .then(function (text) {
           activeState = JSON.parse(text);
+          syncLocalStorageFromState();
           applyState();
-          setStatus("Loaded state from mapping-state.txt.");
+          setStatus("Loaded mapping-state.txt and refreshed browser storage.");
         })
         .catch(function () {
+          syncLocalStorageFromState();
           applyState();
-          setStatus("Using embedded defaults. Open through a local server if the browser blocks mapping-state.txt.");
+          setStatus("Using embedded defaults and refreshed browser storage. Open through a local server if the browser blocks mapping-state.txt.");
         });
     }());
   </script>
